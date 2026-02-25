@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justice for Osman Hadi</title>
+    <style>
+        /* ১. ফন্ট লিঙ্ক করা */
+        @font-face {
+            font-family: 'HadiFont';
+            src: url('FN NuralamZainulAbedin Unicode Regular.ttf'); 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: #000; 
+            height: 100vh; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .wrapper {
+            position: relative;
+            width: 100vw;
+            max-width: 1920px;
+            aspect-ratio: 1920 / 1080;
+            background: url('background.png') no-repeat center center;
+            background-size: contain;
+        }
+
+        /* ২. টেক্সট কন্টেইনার - ফন্ট সাইজ এবং রেসপন্সিভনেস ফিক্স */
+        .title-container {
+            position: absolute;
+            top: 11%; 
+            left: 55%; 
+            text-align: left; 
+            width: fit-content;
+        }
+
+        .main-title {
+            color: #ffffff; 
+            /* clamp(সর্বনিম্ন, বর্তমান-অনুপাত, সর্বোচ্চ) */
+            font-size: clamp(26px, 4.8vw, 92px); 
+            font-weight: bold;
+            display: inline-block;
+            font-family: 'HadiFont', Arial, sans-serif;
+            line-height: 1.3; 
+            text-shadow: 4px 4px 15px rgba(0, 0, 0, 0.9);
+            white-space: nowrap; 
+        }
+
+        /* ডট অ্যানিমেশন */
+        .dots {
+            display: inline-block;
+            width: 1.5em; 
+            text-align: left;
+        }
+
+        .dots::after {
+            content: '';
+            animation: loadingDots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes loadingDots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        /* ৩. টাইমার নাম্বার স্টাইল */
+        .number {
+            position: absolute;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            color: #ffffff;
+            /* সংখ্যাগুলো যাতে মোবাইলে খুব ছোট না হয়ে যায় */
+            font-size: clamp(16px, 3.9vw, 75px); 
+            text-align: center;
+            width: 10%;
+            transform: translate(-50%, -50%);
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        /* বক্স এলাইনমেন্ট */
+        #years   { top: 54.2%; left: 62.5%; }
+        #months  { top: 54.2%; left: 76%; }
+        #days    { top: 54.2%; left: 89%; }
+        
+        #hours   { top: 77.3%; left: 62.5%; }
+        #minutes { top: 77.3%; left: 76.2%; }
+        #seconds { top: 77.3%; left: 89.4%; }
+
+        /* ৪. ছোট স্ক্রিনের জন্য বিশেষ অ্যাডজাস্টমেন্ট */
+        @media (max-width: 768px) {
+            .main-title {
+                white-space: normal; /* মোবাইলে লেখা বেশি বড় হলে যাতে ভেঙে নিচে নামে */
+                line-height: 1.1;
+            }
+            .title-container {
+                top: 9%; /* মোবাইলে সামান্য উপরে অ্যাডজাস্ট করা হয়েছে */
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="title-container">
+            <h1 class="main-title">বিচার পেলাম না <br> আজ<span class="dots"></span></h1>
+        </div>
+
+        <div id="years" class="number">0.0</div>
+        <div id="months" class="number">00</div>
+        <div id="days" class="number">00</div>
+        <div id="hours" class="number">00</div>
+        <div id="minutes" class="number">00</div>
+        <div id="seconds" class="number">00</div>
+    </div>
+
+    <script>
+        // আপনার দেওয়া টার্গেট ডেট
+        const startDate = new Date("December 12, 2025 14:00:00").getTime();
+        
+        function updateTimer() {
+            const now = new Date().getTime();
+            const diff = now - startDate;
+            if (diff < 0) return;
+
+            const second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24;
+            const month = day * 30.44, year = day * 365.25;
+
+            document.getElementById("years").innerText = (diff / year).toFixed(1);
+            document.getElementById("months").innerText = Math.floor((diff % year) / month).toString().padStart(2, '0');
+            document.getElementById("days").innerText = Math.floor((diff % month) / day).toString().padStart(2, '0');
+            document.getElementById("hours").innerText = Math.floor((diff % day) / hour).toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = Math.floor((diff % hour) / minute).toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = Math.floor((diff % minute) / second).toString().padStart(2, '0');
+        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
+    </script>
+</body>
+</html>
